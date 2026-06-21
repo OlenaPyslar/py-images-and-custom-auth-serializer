@@ -69,7 +69,8 @@ class MovieSessionSerializer(serializers.ModelSerializer):
 
     def get_movie_image(self, obj):
         if obj.movie.image:
-            return obj.movie.image.url
+            return (self.context["request"].
+                    build_absolute_uri(obj.movie.image.url))
         return None
 
     class Meta:
