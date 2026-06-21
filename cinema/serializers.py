@@ -31,7 +31,13 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(read_only=True)
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        if obj.image:
+            return (self.context["request"].
+                    build_absolute_uri(obj.image.url))
+        return None
 
     class Meta:
         model = Movie
