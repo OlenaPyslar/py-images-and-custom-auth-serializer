@@ -31,24 +31,9 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
-
-    def get_image(self, obj):
-        if obj.image:
-            return (self.context["request"].
-                    build_absolute_uri(obj.image.url))
-        return None
-
     class Meta:
         model = Movie
-        fields = ("id", "title", "description",
-                  "duration", "genres", "actors", "image")
-
-
-class MovieImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ("id", "image")
+        fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
 class MovieListSerializer(MovieSerializer):
@@ -66,22 +51,13 @@ class MovieDetailSerializer(MovieSerializer):
 
     class Meta:
         model = Movie
-        fields = ("id", "title", "description",
-                  "duration", "genres", "actors", "image")
+        fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
-    movie_image = serializers.SerializerMethodField()
-
-    def get_movie_image(self, obj):
-        if obj.movie.image:
-            return (self.context["request"].
-                    build_absolute_uri(obj.movie.image.url))
-        return None
-
     class Meta:
         model = MovieSession
-        fields = ("id", "show_time", "movie", "cinema_hall", "movie_image")
+        fields = ("id", "show_time", "movie", "cinema_hall")
 
 
 class MovieSessionListSerializer(MovieSessionSerializer):
@@ -103,7 +79,6 @@ class MovieSessionListSerializer(MovieSessionSerializer):
             "cinema_hall_name",
             "cinema_hall_capacity",
             "tickets_available",
-            "movie_image",
         )
 
 
